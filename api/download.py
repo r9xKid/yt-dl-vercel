@@ -1,10 +1,10 @@
-
 import os
 import json
+from io import BytesIO
+
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
-from io import BytesIO
 
 
 def get_drive_service():
@@ -31,7 +31,9 @@ def handler(request):
 
         folder_id = os.environ["GOOGLE_DRIVE_FOLDER_ID"]
 
-        test_file = BytesIO(b"Vercel Google Drive connection test")
+        test_file = BytesIO(
+            b"Vercel Google Drive connection test"
+        )
 
         metadata = {
             "name": "vercel-test.txt",
@@ -52,7 +54,9 @@ def handler(request):
 
         file_id = created["id"]
 
-        drive.files().delete(fileId=file_id).execute()
+        drive.files().delete(
+            fileId=file_id
+        ).execute()
 
         return {
             "statusCode": 200,
