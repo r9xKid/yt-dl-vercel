@@ -31,12 +31,9 @@ class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
             drive = get_drive_service()
-
             folder_id = os.environ["GOOGLE_DRIVE_FOLDER_ID"]
 
-            test_file = BytesIO(
-                b"Vercel Google Drive connection test"
-            )
+            test_file = BytesIO(b"Vercel Google Drive test")
 
             metadata = {
                 "name": "vercel-test.txt",
@@ -57,9 +54,7 @@ class handler(BaseHTTPRequestHandler):
 
             file_id = created["id"]
 
-            drive.files().delete(
-                fileId=file_id
-            ).execute()
+            drive.files().delete(fileId=file_id).execute()
 
             response = {
                 "success": True,
@@ -70,7 +65,6 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(200)
 
         except Exception as e:
-
             response = {
                 "success": False,
                 "error": str(e)
@@ -78,11 +72,7 @@ class handler(BaseHTTPRequestHandler):
 
             self.send_response(500)
 
-        self.send_header(
-            "Content-Type",
-            "application/json"
-        )
-
+        self.send_header("Content-Type", "application/json")
         self.end_headers()
 
         self.wfile.write(
