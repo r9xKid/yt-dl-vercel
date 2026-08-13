@@ -3,23 +3,18 @@ import json
 from io import BytesIO
 from http.server import BaseHTTPRequestHandler
 
-from google.oauth2 import service_account
+from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 
 
 def get_drive_service():
-    private_key = os.environ["GOOGLE_PRIVATE_KEY"].replace("\\n", "\n")
-
-    credentials_info = {
-        "type": "service_account",
-        "client_email": os.environ["GOOGLE_SERVICE_ACCOUNT_EMAIL"],
-        "private_key": private_key,
-        "token_uri": "https://oauth2.googleapis.com/token",
-    }
-
-    credentials = service_account.Credentials.from_service_account_info(
-        credentials_info,
+    credentials = Credentials(
+        token=None,
+        refresh_token=os.environ["GOOGLE_REFRESH_TOKEN"],
+        token_uri="https://oauth2.googleapis.com/token",
+        client_id=os.environ["GOOGLE_CLIENT_ID"],
+        client_secret=os.environ["GOOGLE_CLIENT_SECRET"],
         scopes=["https://www.googleapis.com/auth/drive"],
     )
 
